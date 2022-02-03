@@ -1,0 +1,611 @@
+<!-- Fabrique: Quote and invoice template 29/12/2021 V0.7 -->
+<!DOCTYPE html>
+<html>
+
+<body class="p-4">
+    <!-- Document description Header -->
+    <section class="pb-5 pl-4" id="header">
+        <div class="columns is-vcentered">
+            <div class="column is-half">
+                <h1 class="title">{{projectFullName}}</h1>
+                <p class="subtitle is-size-4">{{documentDescription}}<br />
+                    <span class="has-text-grey">{{documentType}} {{documentCode}}</span>
+                </p>
+            </div>
+            <!-- Seller Logo -->
+            <div class="column is-6 pr-4">
+                <figure class="image is-pulled-right" style="width:250px">
+                    <img style="object-fit: cover" src="{{sellerLogoUrl}}" />
+                </figure>
+            </div>
+        </div>
+    </section>
+    <!-- Document Information -->
+    <section class="pb-5 pt-3 pl-2" id="invoice-details">
+        <div class="columns">
+            <div class="column">
+                <!-- Prepared by -->
+                <span class="has-text-weight-bold">Prepared by</span><br />
+                {{sellerContactFullName}}<br />
+                {% if sellerCompanyName == "" or sellerCompanyName == nil %}
+                {% else %}
+                {{sellerCompanyName}}<br />
+                {% endif %}
+                {{sellerAddress}}, {{sellerCountry}}<br />
+                {% if sellerPhone == "" or sellerPhone == nil %}
+                {% else %}
+                Tel: {{sellerPhone}}<br />
+                {% endif %}
+                {% if sellerEmail == "" or sellerEmail == nil %}
+                {% else %}
+                Email: {{sellerEmail}}<br />
+                {% endif %}
+            </div>
+            <!-- Quote/Invoice to -->
+            <div class="column">
+                <span class="has-text-weight-bold">{% if documentType contains 'Invoice' %} Bill to {% elsif documentType contains 'Quote' %} Quote to {% endif %}</span><br />
+                {{ContactFullName}}<br />
+                {% if _companyName == "" or _companyName == nil %}
+                {% else %}
+                {{_companyName}}<br />
+                {% endif %}
+                {{clientAddress}}, {{clientCountry}}<br />
+                {% if clientPhone == "" or clientPhone == nil %}
+                {% else %}
+                Tel: {{clientPhone}}<br />
+                {% endif %}
+                {% if clientEmail == "" or clientEmail == nil %}
+                {% else %}
+                Email: {{clientEmail}}<br />
+                {% endif %}
+            </div>
+            <!-- Document Details -->
+            <div class="column is-5">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="has-text-weight-bold">Ref:</td>
+                            <td class="pl-2">{{fileName}}</td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-weight-bold">Date:</td>
+                            <td class="pl-2">{{ documentDate | date: "%b %d, %Y" }}</td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-weight-bold">Currency:</td>
+                            <td class="pl-2">{{sellingCurrency}}</td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-weight-bold">Terms:</td>
+                            <td class="pl-2">{{paymentTerms}}</td>
+                        </tr>
+                        <tr>
+                            <td class="has-text-weight-bold">Delivery:</td>
+                            <td class="pl-2">{% if totalShipping == "0" or totalShipping == "null" %} Ex-Factory {% else %} {{shipmentService}} {% endif %}</td>
+                        </tr>
+                        {% if totalUpholsteryMaterials != "0" %}
+                        <tr>
+                            <td class="has-text-weight-bold">Upholstery:</td>
+                            <td class="pl-2">Listed fabrics are provided</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td class="has-text-weight-bold">Upholstery:</td>
+                            <td class="pl-2">Client own fabrics (COM)</td>
+                        </tr>
+                        {% endif %}
+                        {% if UKfoamBS5852 == "True" %}
+                        <tr>
+                            <td class="has-text-weight-bold">Foam:</td>
+                            <td class="pl-2">UK Fire Codes BS5852 Crib 5 compliant</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <!-- Document Items -->
+    <section id="invoice-items">
+        <table class="table is-fullwidth is-borderless">
+            <colgroup>
+                <col span="6" />
+                <col span="2" />
+                <col span="2" />
+                <col span="2" />
+            </colgroup>
+            <thead>
+                <tr class="has-text-right" style="border-bottom: 1px solid #000000">
+                    <th colspan="5"></th>
+                    <th title="Price" colspan="3">Price {{sellingCurrency}}</th>
+                    <th title="Quantity" colspan="2">Qty</th>
+                    <th title="Total" colspan="2">Total {{sellingCurrency}}</th>
+                </tr>
+            </thead>
+            <!--LineItem start here-->
+            {% for lineItem in lineItems %} {% assign itemId = itemId | plus:1 %}
+            <tbody class="page-break-avoid">
+                <td>
+                    <tr>
+                        <td colspan="2" rowspan="4" style="vertical-align: top !important">
+                            <h4 class="is-size-6 has-text-weight-bold">{{itemId}}</h4>
+                            <figure class="image is-128x128">
+                                <img style="height: 100%;object-fit: contain" src="{{lineItem.imagesArray}}" />
+                            </figure>
+                        </td>
+                        <td colspan="10">
+                            <h3 class="is-size-5 is-underlined has-text-weight-bold">
+                                <!--Area and Location-->
+                                <!-- If lineItem.locationArray and/or lineItem.areaArray is empty -->
+                                {% if (lineItem.areaArray == nil or lineItem.areaArray == empty) and (lineItem.locationArray == nil or lineItem.locationArray == empty) %}
+                                {% elsif (lineItem.areaArray == nil or lineItem.areaArray) == empty %} {{lineItem.locationArray}}
+                                {% elsif (lineItem.locationArray == nil or lineItem.locationArray) == empty %} {{lineItem.areaArray}}
+                                {% else %} {{lineItem.locationArray}} - {{lineItem.areaArray}}
+                                {% endif %}
+                            </h3>
+                        </td>
+                    </tr>
+                    <!--Items description, qty and prices-->
+                    <tr>
+                        <td colspan="4" class="is-size-5 is-uppercase has-text-weight-bold">
+                            {{lineItem.itemsReferenceArray}} {{lineItem.itemsShortNameArray}}
+                        </td>
+                        <td colspan="2" class="is-size-6 has-text-right">
+                            <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.itemsSellingPricesPerUnitArray | with_delimiter }}</span>
+                        </td>
+                        <td colspan="2" class="is-size-6 has-text-right">
+                            <span style="white-space:nowrap">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</span>
+                        </td>
+                        <td colspan="2" class="is-size-6 has-text-right">
+                            <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.totalItemsSellingPriceExcludingPackingArray | with_delimiter }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="10"><i>SIZE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> W{{lineItem.widthArray}} x D{{lineItem.depthArray}} x H{{lineItem.heightArray}} mm</td>
+                    </tr>
+                    <tr>
+                        <td colspan="10"><i>DESCRIPTION:&nbsp;</i> {{lineItem.technicalDescriptionsArray}}</td>
+                    </tr>
+                </td>
+            </tbody>
+            <!--Start Upholstery section-->
+            <!-- Hide upholstery section if fabric1Array empty -->
+            {% if lineItem.fabric1Array != "" %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="10" class="is-italic">UPHOLSTERY MATERIALS</td>
+            </tr>
+            {% if lineItem.fabric1Array != "" and (lineItem.fabric1qtyPerUnitArray != "0" or lineItem.fabric1qtyPerUnitArray != "null") %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="1">
+                    <figure class="image is-32x32">
+                        <img style="height: 100%;object-fit: contain" src="{{lineItem.fabric1ImgArray}}" />
+                    </figure>
+                </td>
+                <td colspan="3" class="">
+                    {% if lineItem.fabric1LocationArray != "" %}{{lineItem.fabric1LocationArray}} : {% endif %}{{lineItem.fabric1Array}} {{lineItem.fabric1SubTypeArray}},
+                    {{lineItem.fabric1qtyPerUnitArray}} {{lineItem.fabric1unitArray}} per unit
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.fabric1UnitCostArray | with_delimiter }}</span>
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{lineItem.fabric1qtyTotalArray}} {{lineItem.fabric1unitArray}}</span>
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.fabric1TotalCostArray | with_delimiter }}</span>
+                </td>
+            </tr>
+            <!--Hide upholstery section if fabric2Array empty -->
+            {% endif %}
+            {% if lineItem.fabric2Array != "" and (lineItem.fabric2qtyPerUnitArray != "0" or lineItem.fabric2qtyPerUnitArray != "null") %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="1">
+                    <figure class="image is-32x32">
+                        <img style="height: 100%;object-fit: contain" src="{{lineItem.fabric2ImgArray}}" />
+                    </figure>
+                </td>
+                <td colspan="3">
+                    {% if lineItem.fabric2LocationArray != "" %}{{lineItem.fabric2LocationArray}} : {% endif %}{{lineItem.fabric2Array}} {{lineItem.fabric2SubTypeArray}},
+                    {{lineItem.fabric2qtyPerUnitArray}} {{lineItem.fabric2unitArray}} per unit
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.fabric2UnitCostArray | with_delimiter }}</span>
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{lineItem.fabric2qtyTotalArray}} {{lineItem.fabric2unitArray}}</span>
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.fabric2TotalCostArray | with_delimiter }}</span>
+                </td>
+            </tr>
+            <!--Hide upholstery section if fabric3Array empty -->
+            {% endif %} {% if lineItem.fabric3Array != "" and (lineItem.fabric3qtyPerUnitArray != "0" or lineItem.fabric3qtyPerUnitArray != "null") %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="1">
+                    <figure class="image is-32x32">
+                        <img style="height: 100%;object-fit: contain" src="{{lineItem.fabric3ImgArray}}" />
+                    </figure>
+                </td>
+                <td colspan="3">
+                    {% if lineItem.fabric3LocationArray != "" %}{{lineItem.fabric3LocationArray}} : {% endif %}{{lineItem.fabric3Array}} {{lineItem.fabric3SubTypeArray}},
+                    {{lineItem.fabric3qtyPerUnitArray}} {{lineItem.fabric3unitArray}} per unit
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.fabric3UnitCostArray | with_delimiter }}</span>
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{lineItem.fabric3qtyTotalArray}} {{lineItem.fabric3unitArray}}</span>
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.fabric3TotalCostArray | with_delimiter }}</span>
+                </td>
+            </tr>
+            <!--Hide upholstery section if fabric4Array empty -->
+            {% endif %} {% if lineItem.fabric4Array != "" and (lineItem.fabric4qtyPerUnitArray != "0" or lineItem.fabric4qtyPerUnitArray != "null") %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="1">
+                    <figure class="image is-32x32">
+                        <img style="height: 100%;object-fit: contain" src="{{lineItem.fabric4ImgArray}}" />
+                    </figure>
+                </td>
+                <td colspan="3">
+                    {% if lineItem.fabric4LocationArray != "" %}{{lineItem.fabric4LocationArray}} : {% endif %}{{lineItem.fabric4Array}} {{lineItem.fabric4SubTypeArray}},
+                    {{lineItem.fabric4qtyPerUnitArray}} {{lineItem.fabric4unitArray}} per unit
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.fabric4UnitCostArray | with_delimiter }}</span>
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{lineItem.fabric4qtyTotalArray}} {{lineItem.fabric4unitArray}}</span>
+                </td>
+                <td colspan="2" class="has-text-right">
+                    <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.fabric4TotalCostArray | with_delimiter }}</span>
+                </td>
+            </tr>
+            {% endif %} {% endif %}
+            <!-- Upholstery Section End -->
+            <!--Finish section starts here-->
+            <!--hide finish section if finish1Array is empty -->
+            {% if lineItem.finish1Array != "" %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="10" class="is-italic">FINISHES</td>
+            </tr>
+            <!--finish1Array-->
+            {% if lineItem.finish1Array != "" %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="1">
+                    <figure class="image is-32x32">
+                        <img style="width: 100%;object-fit: contain" src="{{lineItem.finish1ImgArray}}" />
+                    </figure>
+                </td>
+                <td colspan="9" class="py-auto">
+                    {{lineItem.finish1LocationArray}}{% if lineItem.finish1LocationArray != "" %} : {% endif %}{{lineItem.finish1Array}} {{lineItem.finish1SubTypeArray}}{% if lineItem.finish1NameArray != "" %}, {% endif %}{{lineItem.finish1NameArray}}
+                </td>
+            </tr>
+            {% endif %}
+            <!--hide finish section if finish2Array is empty -->
+            {% if lineItem.finish2Array != "" %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="1">
+                    <figure class="image is-32x32">
+                        <img style="width: 100%;object-fit: contain" src="{{lineItem.finish2ImgArray}}" />
+                    </figure>
+                </td>
+                <td colspan="9">
+                    {{lineItem.finish2LocationArray}}{% if lineItem.finish2LocationArray != "" %} : {% endif %}{{lineItem.finish2Array}} {{lineItem.finish2SubTypeArray}}{% if lineItem.finish2NameArray != "" %}, {% endif %}{{lineItem.finish2NameArray}}
+                </td>
+            </tr>
+            {% endif %}
+            <!--hide finish section if finish3Array is empty -->
+            {% if lineItem.finish3Array != "" %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="1">
+                    <figure class="image is-32x32">
+                        <img style="width: 100%;object-fit: contain" src="{{lineItem.finish3ImgArray}}" />
+                    </figure>
+                </td>
+                <td colspan="9">
+                    {{lineItem.finish3LocationArray}}{% if lineItem.finish3LocationArray != "" %} : {% endif %}{{lineItem.finish3Array}} {{lineItem.finish3SubTypeArray}}{% if lineItem.finish3NameArray != "" %}, {% endif %}{{lineItem.finish3NameArray}}
+                </td>
+            </tr>
+            {% endif %}
+            <!--hide finish section if finish4Array is empty -->
+            {% if lineItem.finish4Array != "" %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="1">
+                    <figure class="image is-32x32">
+                        <img style="width: 100%;object-fit: contain" src="{{lineItem.finish4ImgArray}}" />
+                    </figure>
+                </td>
+                <td colspan="9">
+                    {{lineItem.finish4LocationArray}}{% if lineItem.finish4LocationArray != "" %} : {% endif %}{{lineItem.finish4Array}} {{lineItem.finish4SubTypeArray}}{% if lineItem.finish4NameArray != "" %}, {% endif %}{{lineItem.finish4NameArray}}
+                </td>
+            </tr>
+            {% endif %} {% endif %}
+            <!-- Finish Section End -->
+            <!--Packing section starts here-->
+            <!--Hide packing section if packingSellingPricePerUnitArray empty -->
+            {% if lineItem.packingSellingPricePerUnitArray != "0" %}
+            <tr>
+                <td colspan="2" />
+                <td colspan="10" class="is-italic">PACKING</td>
+            </tr>
+            <tr>
+                <td colspan="2" />
+                <td colspan="1">
+                    <figure class="image is-32x32">
+                        <img style="height: 100%;object-fit: contain" src="https://m.media-amazon.com/images/I/41fVeUbWKPL._AC_SL1000_.jpg" />
+                    </figure>
+                </td>
+                <td colspan="3">25mm Honeycomb Export carton packing</td>
+                <td colspan="2" class="has-text-right">
+                    {{sellingCurrency}} {{lineItem.packingSellingPricePerUnitArray | with_delimiter}}
+                </td>
+                <td colspan="2" class="has-text-right">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</td>
+                <td colspan="2" class="has-text-right">
+                    {{sellingCurrency}} {{lineItem.totalPackingsSellingPriceArray | with_delimiter}}
+                </td>
+            </tr>
+            {% endif %}
+            <!-- Packing Section End -->
+            </tbody>
+            {% endfor %}
+        </table>
+        <!--Line items ends here-->
+        <!--Totals section-->
+        <table class="table is-fullwidth is-borderless pageBreak">
+            <colgroup>
+                <col span="6" />
+                <col span="2" />
+                <col span="2" />
+                <col span="2" />
+            </colgroup>
+            <tbody>
+                <tr class="blank-row" style="border-top: 1px solid #000000">
+                    <td colspan="12"></td>
+                </tr>
+                {% if totalUpholsteryMaterials != "0" or totalPacking != "0" %}
+                <tr>
+                    <td colspan="2" />
+                    <td colspan="6" class="has-text-weight-bold">Sub-total for Items Cost Only</td>
+                    <td colspan="2" class="is-size-7 has-text-right">
+                        {{sellingCurrency}} {{totalItemsSellingPricePerUnitExcludingPacking | with_delimiter }}
+                    </td>
+                    <td colspan="2" />
+                </tr>
+                {% endif %}
+                {% if totalUpholsteryMaterials != "0" %}
+                <tr>
+                    <td colspan="2" />
+                    <td colspan="6" class="has-text-weight-bold">
+                        Sub-total for Upholstery material Cost Only
+                    </td>
+                    <td colspan="2" class="is-size-7 has-text-right">
+                        {{sellingCurrency}} {{totalUpholsteryMaterials | with_delimiter }}
+                    </td>
+                    <td colspan="2" />
+                </tr>
+                {% endif %}
+                {% if totalPacking != "0" %}
+                <tr>
+                    <td colspan="2" />
+                    <td colspan="6" class="has-text-weight-bold">
+                        Sub-total for Special Reinforced Export packing Cost Only
+                    </td>
+                    <td colspan="2" class="is-size-7 has-text-right">
+                        {{sellingCurrency}} {{totalPacking | with_delimiter }}
+                    </td>
+                    <td colspan="2" />
+                </tr>
+                {% endif %}
+                <tr class="blank-row">
+                    <td colspan="12"></td>
+                </tr>
+                <tr class="blank-row" style="border-top: 1px solid #000000">
+                    <td colspan="12"></td>
+                </tr>
+                <!--Shipping section-->
+                <tr>
+                    <td colspan="2"></td>
+                    {% if totalShipping == "0" or totalShipping == "null" %}
+                    <td colspan="6" class="has-text-weight-bold">
+                        Shipping and custom brokerage are not included.
+                    </td>
+                    <td colspan="2" />
+                    </td>
+                    <td colspan="2" />
+                    </td>
+                    {% else %}
+                    <td colspan="6" class="has-text-weight-bold">
+                        Shipping included: {{shipmentService}} {{shipmentDescription}}
+                    </td>
+                    <td colspan="2" class="is-size-7 has-text-right">{{sellingCurrency}} {{totalShipping | with_delimiter }}</td>
+                    <td colspan="2" />
+                    </td>
+                    {% endif %}
+                    <!--Fabric handling section-->
+                <tr>
+                    <td colspan="2"></td>
+                    {% if fabricProcurementAmountDocumentCurrency != "0" %}
+                    <td colspan="6" class="has-text-weight-bold">
+                        Handling fee and bank charges for fabric procurement (10%).
+                    </td>
+                    <td colspan="2" class="is-size-7 has-text-right">{{sellingCurrency}} {{fabricProcurementAmountDocumentCurrency | with_delimiter }}</td>
+                    <td colspan="2" />
+                    </td>
+                    {% endif %}
+                    <!--Fabric local transportation section-->
+                <tr>
+                    <td colspan="2"></td>
+                    {% if totalMaterialLocalShippingImperialUnitDocumentCurrency != "0" %}
+                    <td colspan="6" class="has-text-weight-bold">
+                        Fabric Handing and Transportation from HKP warehouse in Hong Kong to HKP Factory.
+                    </td>
+                    <td colspan="2" class="is-size-7 has-text-right">{{sellingCurrency}} {{totalMaterialLocalShippingImperialUnitDocumentCurrency | with_delimiter }}</td>
+                    <td colspan="2" />
+                    </td>
+                    {% endif %}
+                    <!--Totals sections-->
+                <tr class="blank-row">
+                    <td colspan="12" style="border-bottom: 1px solid #000000"></td>
+                </tr>
+                <tr class="blank-row">
+                    <td colspan="12"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" />
+                    <td colspan="6" class="has-text-weight-bold has-text-centered is-uppercase">
+                        TOTAL QTY: {{totalQty}} pcs
+                    </td>
+                    <td colspan="4" class="has-text-weight-bold is-uppercase has-text-right">
+                        GRAND TOTAL: {{sellingCurrency}} {{grandTotal | with_delimiter}}
+                    </td>
+                </tr>
+                {% if documentType == "Deposit Invoice" %}
+                <tr>
+                    <td colspan="2" />
+                    </td>
+                    <td colspan="6" />
+                    </td>
+                    <td colspan="4" class="has-text-weight-bold has-text-danger is-uppercase has-text-right">
+                        DEPOSIT TO PAY: {{sellingCurrency}} {{depositToPay | with_delimiter}}</td>
+                </tr>
+                {% endif %}
+                <tr class="blank-row">
+                    <td colspan="12"></td>
+                </tr>
+            </tbody>
+            <!-- Signature Section -->
+            <tbody style="border: 1px solid #000000">
+                <tr>
+                    <td colspan="12">
+                        <p class="is-size-6 pt-3">Signed by {{sellerContactFullName}}</p>
+                        <div style="height: 100px">
+                            <figure class="image is-pulled-right">
+                                <img src="{{sellerSignatureUrl}}" style="width:280px" />
+                            </figure>
+                        </div>
+                        <p class="has-text-weight-bold">For and on behalf of {{sellerCompanyName}}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Terms & Condition  Section -->
+        <table class="table is-fullwidth is-borderless">
+            <!--Dynamic content if it's a quote or an invoice-->
+            {% if documentType contains 'Invoice' %}
+            <tbody>
+                <tr class="blank-row">
+                    <td colspan="12"></td>
+                </tr>
+                <tr style="border: 2px solid #000000">
+                    <td colspan="12" class="is-size-3 has-text-weight-bold has-text-centered">
+                        Bank Details
+                    </td>
+                </tr>
+                <tr>
+                    <td class="has-text-weight-bold">Payable to:</td>
+                    <td class="pl-2">Hong Kong Procurements Ltd.</td>
+                </tr>
+                <tr>
+                    <td class="has-text-weight-bold">Bank Name:</td>
+                    <td class="pl-2">The Hongkong and Shanghai Banking Corporation Limited</td>
+                </tr>
+                <tr>
+                    <td class="has-text-weight-bold">Account number:</td>
+                    <td class="pl-2">809-120090-838</td>
+                </tr>
+                <tr>
+                    <td class="has-text-weight-bold">Branch number:</td>
+                    <td class="pl-2">809</td>
+                </tr>
+                <tr>
+                    <td class="has-text-weight-bold">Bank Address:</td>
+                    <td class="pl-2">Causeway Bay Plaza Two, 463-483 Lockhart Road, Causeway Bay, Hong Kong</td>
+                </tr>
+                <tr>
+                    <td class="has-text-weight-bold">SWIFT-BIC:</td>
+                    <td class="pl-2">HSBCHKHHHKH</td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+        {% elsif documentType contains 'Quote' %}
+        <!--Insert a page break before the terms and conditions-->
+        <div class="pageBreak">
+            <tbody>
+                <tr class="blank-row">
+                    <td colspan="12"></td>
+                </tr>
+                <tr style="border: 2px solid #000000">
+                    <td colspan="12" class="is-size-3 has-text-weight-bold has-text-centered">
+                        Terms &amp; Conditions
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="12"></td>
+                </tr>
+                <tr style="border: 2px solid #000000">
+                    <td colspan="12">
+                        <p>
+                            1. Terms & Conditions contained herein and on any other pages of this quotation/order embody the entire understanding between HKP International Ltd. ("HKP International") and the customer (the "Buyer") as to the sale of goods and/or installation service, if any.<br /><br />
+                            2. Orders, once confirmed by the Buyer, cannot thereafter be cancelled by the Buyer unless with the written consent of HKP, at the sole discretion of HKP International and subject to the payment of any applicable cancellation charges, as notified to the buyer by HKP International.<br /><br />
+                            3. The Buyer must notify, confirm and agree with HKP International the specific finishes, dimensions and quantities for each item prior to manufacturing. If The Buyer or its representative cannot provide plan, elevations, sections/details specifications prior to the shop drawings preparation, HKP International reserves all of its rights to apply a design fees to the order, in addition to the sale of goods.<br /><br />
+                            4. HKP International shall, at the Buyer's request, provide any material description or technical information available from the suppliers or manufacturers represented by HKP International. The Buyer accepts that the goods supplied may have slight variations in colour, shading, graining, blotches or texture, etc., within industrial tolerance.<br /><br />
+                            5. Any claim of any nature against HKP International shall not exceed the relevant purchase price of the goods another/or installation charges. If some portion of the goods delivered is defective or otherwise validly rejected, payment for the accepted goods shall be paid in full. Under no circumstances shall HKP International be liable for any indirect or consequential losses and/or damages, nor shall HKP International be liable for any losses attributable for deliveries later than those set out in this quotation/order. All such delivery dates are based on estimates received by HKP International suppliers, and are not commitments on the part of HKP International to effect delivery by such dates.<br /><br />
+                            6. HKP International is not liable for damage to transported items outside of manufacturers premises i.e. the risk passes to the Buyer appointed shipper or forwarder once goods depart. All insurances against further risk outside of manufacturing factory premises are to be taken up by shipping company / or transporter at the cost of Buyer.<br /><br />
+                            7. All items are photographed by HKP International at the manufacturer’s premises prior to and after packing. Therefore, HK Procurements Ltd is not liable to cover the repair expenses of any damage to furniture items during transportation or discovered upon & during unpacking of the furniture items.<br /><br />
+                            8. Claims for replacements or refunds on defective furniture, fabrics, or any other products supplied by HKP International must be made in writing within 5 (five) days after delivery of goods. The rights of the Buyer to make any claim shall be forfeited should the buyer fail to notify HKP International within such 5 day period (or return the goods within 5 days of the date delivered).<br /><br />
+                            9. Defects remainder in any partial delivery of goods or workmanship shall not be a ground for cancellation of the remainder of this quotation or for the repudiation of further deliveries of goods by the Buyer.<br /><br />
+                            10. Should delivery of the goods or any part thereof be delayed or interrupted or delayed as a consequence of unforeseen events or under any force majeure condition beyond HKP International and/or the relevant manufacturer's control. HKP International shall be entitled to discontinue the delivery of the goods or any part thereof, or to postpone or to withdraw from the quotation wholly or in part, without prejudice to the Buyer's liability for the goods already delivered.<br /><br />
+                            11. In the event the Buyer fails to take delivery of the goods or to honour the terms of payment in accordance with the terms and conditions of this quotation, it shall be lawful for HKP International at any time and without any obligation to service notice or seek the Buyer's consent to terminate the quotation and resell the goods or any portion thereof, with any costs or losses being for account of the Buyer.<br /><br />
+                            12. The Buyer may not assign or transfer any rights or benefits pursuant to this quotation within the written consent of HKP International.<br /><br />
+                            13. 12 x months limited liability period on furniture structural / finish defects only.<br /><br />
+                            14. Prices are based on information provided by the Client or by the Designer appointed by the client.<br /><br />
+                            15. Above prices are estimated prices only & are subject to Design, Size and Materials & Finishes verification, confirmation & approval. Final quotation and invoice to be issued by HKP International upon acceptance of this quotation.<br /><br />
+                            16. Unit prices do not include full size mock ups. Full size mock ups and delivery of mock ups to be charged at unit value.<br /><br />
+                            17. Upholstery Material costs not included unless specified otherwise. Fabric transportation from Hong Kong to the factory is not included unless specified otherwise.<br /><br />
+                            18. Prices are Ex-Factory and do not include shipment, delivery & installation on site unless specified otherwise. Installation on site can be provided at an optional and additional cost. Prices do not include any import duty, VAT or any other tax.<br /><br />
+                            19. Payment Terms:<br /><br />
+                            <p>Furniture & Lighting:</p>
+                            <ul>
+                                <li>50% deposit upon receipt of P.O. from client, production to start upon receipt of deposit payment from client.</li>
+                                <li>50% after goods inspection at factory, good to leave the factory upon receipt of balance payment from client.</li>
+                            </ul>
+                            <br />
+                            <p>Fabric:</p>
+                            <ul>
+                                <li>100% upon Purchase Order issuance from client.</li>
+                            </ul>
+                            <br />
+                            <p>Shipment:</p>
+                            <ul>
+                                <li>100% before delivery of container at factory.</li>
+                            </ul>
+                            <br />
+                            <p>
+                                20. Production Lead Time: 10 Weeks upon receipt of Deposit Payment.<br /><br />
+                                21. Prices include standard Cardboard Packing unless Export Packing is specified otherwise. Crating Plywood Packing can be provided at an optional and additional cost.<br /><br />
+                                22. The above prices are valid for 14 days only.<br /><br />
+                            </p>
+                            {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </div>
+        <!-- Terms & Condition  Section End-->
+        </table>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+@import url("https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css");
+
+$variable-columns: "false";
+
+html {
+	font-size: 12px;
+}
+
+td {
+	vertical-align: middle !important;
+}
+
+.table {
+	margin-top: 0;
+}
+
+@media print {
+.page-break-avoid {
+    // display: inline-block;
+    page-break-inside: avoid !important;
+}
+.page-break-before {
+  page-break-before: auto;
+}
+img {
+    max-height: 100%;
+    max-width: 100%;
+    max-height: 120px;
+}
+}
+
+// Custom styles
+
+.pageBreak {
+  page-break-before: always;
+}
+
+.table.is-borderless td,
+.table.is-borderless th {
+	border: 0;
+}
+
+.is-currency {
+	text-align: right !important;
+	color: red;
+}
+
+.blank_row {
+	height: 18px !important;
+}
+
+p {
+  font-size:9px;
+}
+
+li {
+  font-size:9px;
+  display: list-item;
+}

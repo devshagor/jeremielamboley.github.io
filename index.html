@@ -128,12 +128,12 @@ title: test form
                 </tr>
             </thead>
             <!--LineItem start here-->
-            {% for lineItem in lineItems %} {% assign itemId = itemId | plus:1 %}
+            {% for lineItem in site.data.payload.lineItems %} {% assign itemId = itemId | plus:1 %}
             <tbody class="page-break-avoid">
                 <td>
                     <tr>
                         <td colspan="2" rowspan="4" style="vertical-align: top !important">
-                            <h4 class="is-size-6 has-text-weight-bold">{{site.data.payload.itemId}}</h4>
+                            <h4 class="is-size-6 has-text-weight-bold">{{lineItem.itemId}}</h4>
                             <figure class="image is-128x128">
                                 <img style="height: 100%;object-fit: contain" src="{{lineItem.imagesArray}}" />
                             </figure>

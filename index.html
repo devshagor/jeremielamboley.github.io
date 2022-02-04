@@ -158,7 +158,7 @@ title: test form
                             {{lineItem.itemsReferenceArray}} {{lineItem.itemsShortNameArray}}
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} <input class="input" type="type="number"" placeholder="Price input"></span>
+                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} <input class="input" type="text" class="field is-narrow" placeholder="Price USD"></span>
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
                             <span style="white-space:nowrap">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</span>
@@ -356,11 +356,11 @@ title: test form
                 </td>
                 <td colspan="3">25mm Honeycomb Export carton packing</td>
                 <td colspan="2" class="has-text-right">
-                    {{site.data.payload.sellingCurrency}} {{lineItem.packingSellingPricePerUnitArray | with_delimiter}}
+                    {{site.data.payload.sellingCurrency}} <input class="input" type="text" class="field is-narrow" placeholder="Price USD">
                 </td>
                 <td colspan="2" class="has-text-right">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</td>
                 <td colspan="2" class="has-text-right">
-                    {{site.data.payload.sellingCurrency}} {{lineItem.totalPackingsSellingPriceArray | with_delimiter}}
+                    <!-- {{site.data.payload.sellingCurrency}} {{lineItem.totalPackingsSellingPriceArray | with_delimiter}} -->
                 </td>
             </tr>
             {% endif %}

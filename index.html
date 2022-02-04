@@ -158,7 +158,7 @@ title: test form
                             {{lineItem.itemsReferenceArray}} {{lineItem.itemsShortNameArray}}
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} <input class="input" type="text" style="width: 50%" placeholder="Price USD"></span>
+                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} <input class="input" type="text" style="width: 40%" placeholder="Price USD"></span>
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
                             <span style="white-space:nowrap">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</span>
@@ -192,7 +192,7 @@ title: test form
                 </td>
                 <td colspan="3" class="">
                     {% if lineItem.fabric1LocationArray != "" %}{{lineItem.fabric1LocationArray}} : {% endif %}{{lineItem.fabric1Array}} {{lineItem.fabric1SubTypeArray}},
-                    <input class="input" type="text" width="100px" placeholder="Qty"> {{lineItem.fabric1unitArray}} per unit
+                    <input class="input" type="text" style="width: 40%" placeholder="Qty"> {{lineItem.fabric1unitArray}} per unit
                 </td>
                 <td colspan="2" class="has-text-right">
                     <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric1UnitCostArray | with_delimiter }}</span> -->
@@ -356,7 +356,7 @@ title: test form
                 </td>
                 <td colspan="3">25mm Honeycomb Export carton packing</td>
                 <td colspan="2" class="has-text-right">
-                    {{site.data.payload.sellingCurrency}} <input class="input" type="text" width="100px" placeholder="Price USD">
+                    {{site.data.payload.sellingCurrency}} <input class="input" type="text" style="width: 40%" placeholder="Price USD">
                 </td>
                 <td colspan="2" class="has-text-right">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</td>
                 <td colspan="2" class="has-text-right">

@@ -158,7 +158,7 @@ title: test form
                             {{lineItem.itemsReferenceArray}} {{lineItem.itemsShortNameArray}}
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} <input class="input" type="text" size="50" placeholder="Price USD"></span>
+                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} <input class="input" type="text" width="100px" placeholder="Price USD"></span>
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
                             <span style="white-space:nowrap">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</span>
@@ -192,16 +192,16 @@ title: test form
                 </td>
                 <td colspan="3" class="">
                     {% if lineItem.fabric1LocationArray != "" %}{{lineItem.fabric1LocationArray}} : {% endif %}{{lineItem.fabric1Array}} {{lineItem.fabric1SubTypeArray}},
-                    {{lineItem.fabric1qtyPerUnitArray}} {{lineItem.fabric1unitArray}} per unit
+                    <input class="input" type="text" width="100px" placeholder="Qty"> {{lineItem.fabric1unitArray}} per unit
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric1UnitCostArray | with_delimiter }}</span>
+                    <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric1UnitCostArray | with_delimiter }}</span> -->
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{lineItem.fabric1qtyTotalArray}} {{lineItem.fabric1unitArray}}</span>
+                    <!-- <span style="white-space:nowrap">{{lineItem.fabric1qtyTotalArray}} {{lineItem.fabric1unitArray}}</span> -->
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric1TotalCostArray | with_delimiter }}</span>
+                    <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric1TotalCostArray | with_delimiter }}</span> -->
                 </td>
             </tr>
             <!--Hide upholstery section if fabric2Array empty -->
@@ -219,13 +219,13 @@ title: test form
                     {{lineItem.fabric2qtyPerUnitArray}} {{lineItem.fabric2unitArray}} per unit
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric2UnitCostArray | with_delimiter }}</span>
+                    <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric2UnitCostArray | with_delimiter }}</span> -->
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{lineItem.fabric2qtyTotalArray}} {{lineItem.fabric2unitArray}}</span>
+                    <!-- <span style="white-space:nowrap">{{lineItem.fabric2qtyTotalArray}} {{lineItem.fabric2unitArray}}</span> -->
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric2TotalCostArray | with_delimiter }}</span>
+                    <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric2TotalCostArray | with_delimiter }}</span> -->
                 </td>
             </tr>
             <!--Hide upholstery section if fabric3Array empty -->
@@ -242,13 +242,13 @@ title: test form
                     {{lineItem.fabric3qtyPerUnitArray}} {{lineItem.fabric3unitArray}} per unit
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric3UnitCostArray | with_delimiter }}</span>
+                    <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric3UnitCostArray | with_delimiter }}</span> -->
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{lineItem.fabric3qtyTotalArray}} {{lineItem.fabric3unitArray}}</span>
+                    <!-- <span style="white-space:nowrap">{{lineItem.fabric3qtyTotalArray}} {{lineItem.fabric3unitArray}}</span> -->
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric3TotalCostArray | with_delimiter }}</span>
+                    <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric3TotalCostArray | with_delimiter }}</span> -->
                 </td>
             </tr>
             <!--Hide upholstery section if fabric4Array empty -->
@@ -265,13 +265,13 @@ title: test form
                     {{lineItem.fabric4qtyPerUnitArray}} {{lineItem.fabric4unitArray}} per unit
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric4UnitCostArray | with_delimiter }}</span>
+                    <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric4UnitCostArray | with_delimiter }}</span> -->
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{lineItem.fabric4qtyTotalArray}} {{lineItem.fabric4unitArray}}</span>
+                    <!-- <span style="white-space:nowrap">{{lineItem.fabric4qtyTotalArray}} {{lineItem.fabric4unitArray}}</span> -->
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric4TotalCostArray | with_delimiter }}</span>
+                    <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric4TotalCostArray | with_delimiter }}</span> -->
                 </td>
             </tr>
             {% endif %} {% endif %}
@@ -356,7 +356,7 @@ title: test form
                 </td>
                 <td colspan="3">25mm Honeycomb Export carton packing</td>
                 <td colspan="2" class="has-text-right">
-                    {{site.data.payload.sellingCurrency}} <input class="input" type="text" size="50" placeholder="Price USD">
+                    {{site.data.payload.sellingCurrency}} <input class="input" type="text" width="100px" placeholder="Price USD">
                 </td>
                 <td colspan="2" class="has-text-right">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</td>
                 <td colspan="2" class="has-text-right">

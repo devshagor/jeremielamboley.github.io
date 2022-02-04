@@ -158,13 +158,13 @@ title: test form
                             {{lineItem.itemsReferenceArray}} {{lineItem.itemsShortNameArray}}
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.itemsSellingPricesPerUnitArray | with_delimiter }}</span>
+                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} <input class="input" type="type="number"" placeholder="Price input"></span>
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
                             <span style="white-space:nowrap">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</span>
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.totalItemsSellingPriceExcludingPackingArray | with_delimiter }}</span>
+                            <!-- <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.totalItemsSellingPriceExcludingPackingArray | with_delimiter }}</span> -->
                         </td>
                     </tr>
                     <tr>

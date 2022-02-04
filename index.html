@@ -128,24 +128,24 @@ title: test form
                 </tr>
             </thead>
             <!--LineItem start here-->
-            {% for lineItem in site.data.payload.lineItems %} {% assign itemId = itemId | plus:1 %}
+            {% for lineItem in lineItems %} {% assign itemId = itemId | plus:1 %}
             <tbody class="page-break-avoid">
                 <td>
                     <tr>
                         <td colspan="2" rowspan="4" style="vertical-align: top !important">
                             <h4 class="is-size-6 has-text-weight-bold">{{site.data.payload.itemId}}</h4>
                             <figure class="image is-128x128">
-                                <img style="height: 100%;object-fit: contain" src="{{site.data.payload.lineItem.imagesArray}}" />
+                                <img style="height: 100%;object-fit: contain" src="{{lineItem.imagesArray}}" />
                             </figure>
                         </td>
                         <td colspan="10">
                             <h3 class="is-size-5 is-underlined has-text-weight-bold">
                                 <!--Area and Location-->
                                 <!-- If lineItem.locationArray and/or lineItem.areaArray is empty -->
-                                {% if (site.data.payload.lineItem.areaArray == nil or site.data.payload.lineItem.areaArray == empty) and (site.data.payload.lineItem.locationArray == nil or site.data.payload.lineItem.locationArray == empty) %}
-                                {% elsif (site.data.payload.lineItem.areaArray == nil or site.data.payload.lineItem.areaArray) == empty %} {{site.data.payload.lineItem.locationArray}}
-                                {% elsif (site.data.payload.lineItem.locationArray == nil or site.data.payload.lineItem.locationArray) == empty %} {{site.data.payload.lineItem.areaArray}}
-                                {% else %} {{site.data.payload.lineItem.locationArray}} - {{site.data.payload.lineItem.areaArray}}
+                                {% if (lineItem.areaArray == nil or lineItem.areaArray == empty) and (lineItem.locationArray == nil or lineItem.locationArray == empty) %}
+                                {% elsif (lineItem.areaArray == nil or lineItem.areaArray) == empty %} {{lineItem.locationArray}}
+                                {% elsif (lineItem.locationArray == nil or lineItem.locationArray) == empty %} {{lineItem.areaArray}}
+                                {% else %} {{lineItem.locationArray}} - {{lineItem.areaArray}}
                                 {% endif %}
                             </h3>
                         </td>
@@ -156,20 +156,20 @@ title: test form
                             {{lineItem.itemsReferenceArray}} {{lineItem.itemsShortNameArray}}
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.itemsSellingPricesPerUnitArray | with_delimiter }}</span>
+                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.itemsSellingPricesPerUnitArray | with_delimiter }}</span>
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{site.data.payload.lineItem.qtyArray}} {% if site.data.payload.lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</span>
+                            <span style="white-space:nowrap">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</span>
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.totalItemsSellingPriceExcludingPackingArray | with_delimiter }}</span>
+                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.totalItemsSellingPriceExcludingPackingArray | with_delimiter }}</span>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="10"><i>SIZE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> W{{site.data.payload.lineItem.widthArray}} x D{{site.data.payload.lineItem.depthArray}} x H{{site.data.payload.lineItem.heightArray}} mm</td>
+                        <td colspan="10"><i>SIZE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> W{{lineItem.widthArray}} x D{{lineItem.depthArray}} x H{{lineItem.heightArray}} mm</td>
                     </tr>
                     <tr>
-                        <td colspan="10"><i>DESCRIPTION:&nbsp;</i> {{site.data.payload.lineItem.technicalDescriptionsArray}}</td>
+                        <td colspan="10"><i>DESCRIPTION:&nbsp;</i> {{lineItem.technicalDescriptionsArray}}</td>
                     </tr>
                 </td>
             </tbody>
@@ -185,21 +185,21 @@ title: test form
                 <td colspan="2" />
                 <td colspan="1">
                     <figure class="image is-32x32">
-                        <img style="height: 100%;object-fit: contain" src="{{site.data.payload.lineItem.fabric1ImgArray}}" />
+                        <img style="height: 100%;object-fit: contain" src="{{lineItem.fabric1ImgArray}}" />
                     </figure>
                 </td>
                 <td colspan="3" class="">
-                    {% if lineItem.fabric1LocationArray != "" %}{{site.data.payload.lineItem.fabric1LocationArray}} : {% endif %}{{site.data.payload.lineItem.fabric1Array}} {{site.data.payload.lineItem.fabric1SubTypeArray}},
-                    {{site.data.payload.lineItem.fabric1qtyPerUnitArray}} {{site.data.payload.lineItem.fabric1unitArray}} per unit
+                    {% if lineItem.fabric1LocationArray != "" %}{{lineItem.fabric1LocationArray}} : {% endif %}{{lineItem.fabric1Array}} {{lineItem.fabric1SubTypeArray}},
+                    {{lineItem.fabric1qtyPerUnitArray}} {{lineItem.fabric1unitArray}} per unit
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.fabric1UnitCostArray | with_delimiter }}</span>
+                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric1UnitCostArray | with_delimiter }}</span>
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.lineItem.fabric1qtyTotalArray}} {{site.data.payload.lineItem.fabric1unitArray}}</span>
+                    <span style="white-space:nowrap">{{lineItem.fabric1qtyTotalArray}} {{lineItem.fabric1unitArray}}</span>
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.fabric1TotalCostArray | with_delimiter }}</span>
+                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric1TotalCostArray | with_delimiter }}</span>
                 </td>
             </tr>
             <!--Hide upholstery section if fabric2Array empty -->
@@ -209,21 +209,21 @@ title: test form
                 <td colspan="2" />
                 <td colspan="1">
                     <figure class="image is-32x32">
-                        <img style="height: 100%;object-fit: contain" src="{{site.data.payload.lineItem.fabric2ImgArray}}" />
+                        <img style="height: 100%;object-fit: contain" src="{{lineItem.fabric2ImgArray}}" />
                     </figure>
                 </td>
                 <td colspan="3">
-                    {% if lineItem.fabric2LocationArray != "" %}{{site.data.payload.lineItem.fabric2LocationArray}} : {% endif %}{{site.data.payload.lineItem.fabric2Array}} {{site.data.payload.lineItem.fabric2SubTypeArray}},
-                    {{site.data.payload.lineItem.fabric2qtyPerUnitArray}} {{site.data.payload.lineItem.fabric2unitArray}} per unit
+                    {% if lineItem.fabric2LocationArray != "" %}{{lineItem.fabric2LocationArray}} : {% endif %}{{lineItem.fabric2Array}} {{lineItem.fabric2SubTypeArray}},
+                    {{lineItem.fabric2qtyPerUnitArray}} {{lineItem.fabric2unitArray}} per unit
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.fabric2UnitCostArray | with_delimiter }}</span>
+                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric2UnitCostArray | with_delimiter }}</span>
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.lineItem.fabric2qtyTotalArray}} {{site.data.payload.lineItem.fabric2unitArray}}</span>
+                    <span style="white-space:nowrap">{{lineItem.fabric2qtyTotalArray}} {{lineItem.fabric2unitArray}}</span>
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.fabric2TotalCostArray | with_delimiter }}</span>
+                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric2TotalCostArray | with_delimiter }}</span>
                 </td>
             </tr>
             <!--Hide upholstery section if fabric3Array empty -->
@@ -232,21 +232,21 @@ title: test form
                 <td colspan="2" />
                 <td colspan="1">
                     <figure class="image is-32x32">
-                        <img style="height: 100%;object-fit: contain" src="{{site.data.payload.lineItem.fabric3ImgArray}}" />
+                        <img style="height: 100%;object-fit: contain" src="{{lineItem.fabric3ImgArray}}" />
                     </figure>
                 </td>
                 <td colspan="3">
-                    {% if lineItem.fabric3LocationArray != "" %}{{site.data.payload.lineItem.fabric3LocationArray}} : {% endif %}{{site.data.payload.lineItem.fabric3Array}} {{site.data.payload.lineItem.fabric3SubTypeArray}},
-                    {{site.data.payload.lineItem.fabric3qtyPerUnitArray}} {{site.data.payload.lineItem.fabric3unitArray}} per unit
+                    {% if lineItem.fabric3LocationArray != "" %}{{lineItem.fabric3LocationArray}} : {% endif %}{{lineItem.fabric3Array}} {{lineItem.fabric3SubTypeArray}},
+                    {{lineItem.fabric3qtyPerUnitArray}} {{lineItem.fabric3unitArray}} per unit
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.fabric3UnitCostArray | with_delimiter }}</span>
+                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric3UnitCostArray | with_delimiter }}</span>
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.lineItem.fabric3qtyTotalArray}} {{site.data.payload.lineItem.fabric3unitArray}}</span>
+                    <span style="white-space:nowrap">{{lineItem.fabric3qtyTotalArray}} {{lineItem.fabric3unitArray}}</span>
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.fabric3TotalCostArray | with_delimiter }}</span>
+                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric3TotalCostArray | with_delimiter }}</span>
                 </td>
             </tr>
             <!--Hide upholstery section if fabric4Array empty -->
@@ -255,21 +255,21 @@ title: test form
                 <td colspan="2" />
                 <td colspan="1">
                     <figure class="image is-32x32">
-                        <img style="height: 100%;object-fit: contain" src="{{site.data.payload.lineItem.fabric4ImgArray}}" />
+                        <img style="height: 100%;object-fit: contain" src="{{lineItem.fabric4ImgArray}}" />
                     </figure>
                 </td>
                 <td colspan="3">
-                    {% if lineItem.fabric4LocationArray != "" %}{{site.data.payload.lineItem.fabric4LocationArray}} : {% endif %}{{site.data.payload.lineItem.fabric4Array}} {{site.data.payload.lineItem.fabric4SubTypeArray}},
-                    {{site.data.payload.lineItem.fabric4qtyPerUnitArray}} {{site.data.payload.lineItem.fabric4unitArray}} per unit
+                    {% if lineItem.fabric4LocationArray != "" %}{{lineItem.fabric4LocationArray}} : {% endif %}{{lineItem.fabric4Array}} {{lineItem.fabric4SubTypeArray}},
+                    {{lineItem.fabric4qtyPerUnitArray}} {{lineItem.fabric4unitArray}} per unit
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.fabric4UnitCostArray | with_delimiter }}</span>
+                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric4UnitCostArray | with_delimiter }}</span>
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.lineItem.fabric4qtyTotalArray}} {{site.data.payload.lineItem.fabric4unitArray}}</span>
+                    <span style="white-space:nowrap">{{lineItem.fabric4qtyTotalArray}} {{lineItem.fabric4unitArray}}</span>
                 </td>
                 <td colspan="2" class="has-text-right">
-                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.fabric4TotalCostArray | with_delimiter }}</span>
+                    <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{lineItem.fabric4TotalCostArray | with_delimiter }}</span>
                 </td>
             </tr>
             {% endif %} {% endif %}
@@ -287,11 +287,11 @@ title: test form
                 <td colspan="2" />
                 <td colspan="1">
                     <figure class="image is-32x32">
-                        <img style="width: 100%;object-fit: contain" src="{{site.data.payload.lineItem.finish1ImgArray}}" />
+                        <img style="width: 100%;object-fit: contain" src="{{lineItem.finish1ImgArray}}" />
                     </figure>
                 </td>
                 <td colspan="9" class="py-auto">
-                    {{site.data.payload.lineItem.finish1LocationArray}}{% if lineItem.finish1LocationArray != "" %} : {% endif %}{{site.data.payload.lineItem.finish1Array}} {{site.data.payload.lineItem.finish1SubTypeArray}}{% if lineItem.finish1NameArray != "" %}, {% endif %}{{site.data.payload.lineItem.finish1NameArray}}
+                    {{lineItem.finish1LocationArray}}{% if lineItem.finish1LocationArray != "" %} : {% endif %}{{lineItem.finish1Array}} {{lineItem.finish1SubTypeArray}}{% if lineItem.finish1NameArray != "" %}, {% endif %}{{lineItem.finish1NameArray}}
                 </td>
             </tr>
             {% endif %}
@@ -301,11 +301,11 @@ title: test form
                 <td colspan="2" />
                 <td colspan="1">
                     <figure class="image is-32x32">
-                        <img style="width: 100%;object-fit: contain" src="{{site.data.payload.lineItem.finish2ImgArray}}" />
+                        <img style="width: 100%;object-fit: contain" src="{{lineItem.finish2ImgArray}}" />
                     </figure>
                 </td>
                 <td colspan="9">
-                    {{site.data.payload.lineItem.finish2LocationArray}}{% if lineItem.finish2LocationArray != "" %} : {% endif %}{{site.data.payload.lineItem.finish2Array}} {{site.data.payload.lineItem.finish2SubTypeArray}}{% if lineItem.finish2NameArray != "" %}, {% endif %}{{site.data.payload.lineItem.finish2NameArray}}
+                    {{lineItem.finish2LocationArray}}{% if lineItem.finish2LocationArray != "" %} : {% endif %}{{lineItem.finish2Array}} {{lineItem.finish2SubTypeArray}}{% if lineItem.finish2NameArray != "" %}, {% endif %}{{lineItem.finish2NameArray}}
                 </td>
             </tr>
             {% endif %}
@@ -315,11 +315,11 @@ title: test form
                 <td colspan="2" />
                 <td colspan="1">
                     <figure class="image is-32x32">
-                        <img style="width: 100%;object-fit: contain" src="{{site.data.payload.lineItem.finish3ImgArray}}" />
+                        <img style="width: 100%;object-fit: contain" src="{{lineItem.finish3ImgArray}}" />
                     </figure>
                 </td>
                 <td colspan="9">
-                    {{site.data.payload.lineItem.finish3LocationArray}}{% if lineItem.finish3LocationArray != "" %} : {% endif %}{{site.data.payload.lineItem.finish3Array}} {{site.data.payload.lineItem.finish3SubTypeArray}}{% if lineItem.finish3NameArray != "" %}, {% endif %}{{site.data.payload.lineItem.finish3NameArray}}
+                    {{lineItem.finish3LocationArray}}{% if lineItem.finish3LocationArray != "" %} : {% endif %}{{lineItem.finish3Array}} {{lineItem.finish3SubTypeArray}}{% if lineItem.finish3NameArray != "" %}, {% endif %}{{lineItem.finish3NameArray}}
                 </td>
             </tr>
             {% endif %}
@@ -329,11 +329,11 @@ title: test form
                 <td colspan="2" />
                 <td colspan="1">
                     <figure class="image is-32x32">
-                        <img style="width: 100%;object-fit: contain" src="{{site.data.payload.lineItem.finish4ImgArray}}" />
+                        <img style="width: 100%;object-fit: contain" src="{{lineItem.finish4ImgArray}}" />
                     </figure>
                 </td>
                 <td colspan="9">
-                    {{site.data.payload.lineItem.finish4LocationArray}}{% if lineItem.finish4LocationArray != "" %} : {% endif %}{{site.data.payload.lineItem.finish4Array}} {{site.data.payload.lineItem.finish4SubTypeArray}}{% if lineItem.finish4NameArray != "" %}, {% endif %}{{site.data.payload.lineItem.finish4NameArray}}
+                    {{lineItem.finish4LocationArray}}{% if lineItem.finish4LocationArray != "" %} : {% endif %}{{lineItem.finish4Array}} {{lineItem.finish4SubTypeArray}}{% if lineItem.finish4NameArray != "" %}, {% endif %}{{lineItem.finish4NameArray}}
                 </td>
             </tr>
             {% endif %} {% endif %}
@@ -354,11 +354,11 @@ title: test form
                 </td>
                 <td colspan="3">25mm Honeycomb Export carton packing</td>
                 <td colspan="2" class="has-text-right">
-                    {{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.packingSellingPricePerUnitArray | with_delimiter}}
+                    {{site.data.payload.sellingCurrency}} {{lineItem.packingSellingPricePerUnitArray | with_delimiter}}
                 </td>
-                <td colspan="2" class="has-text-right">{{site.data.payload.lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</td>
+                <td colspan="2" class="has-text-right">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</td>
                 <td colspan="2" class="has-text-right">
-                    {{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.totalPackingsSellingPriceArray | with_delimiter}}
+                    {{site.data.payload.sellingCurrency}} {{lineItem.totalPackingsSellingPriceArray | with_delimiter}}
                 </td>
             </tr>
             {% endif %}

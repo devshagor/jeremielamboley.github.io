@@ -128,7 +128,7 @@ title: test form
                 </tr>
             </thead>
             <!--LineItem start here-->
-            {% for lineItem in site.data.payload.lineItems %} {% assign itemId = itemId | plus:1 %}
+            {% for lineItem in site.data.payload.lineItems %} {% assign lineItem.itemId = lineItem.itemId | plus:1 %}
             <tbody class="page-break-avoid">
                 <td>
                     <tr>

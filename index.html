@@ -1,7 +1,12 @@
-<!-- Fabrique: Quote and invoice template 29/12/2021 V0.7 -->
+---
+title: test form
+---
 <!DOCTYPE html>
 <html>
-
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }}</title>
+  </head>
 <body class="p-4">
     <!-- Document description Header -->
     <section class="pb-5 pl-4" id="header">
@@ -26,37 +31,37 @@
             <div class="column">
                 <!-- Prepared by -->
                 <span class="has-text-weight-bold">Prepared by</span><br />
-                {{sellerContactFullName}}<br />
+                {{site.data.payload.sellerContactFullName}}<br />
                 {% if sellerCompanyName == "" or sellerCompanyName == nil %}
                 {% else %}
-                {{sellerCompanyName}}<br />
+                {{site.data.payload.sellerCompanyName}}<br />
                 {% endif %}
-                {{sellerAddress}}, {{sellerCountry}}<br />
+                {{site.data.payload.sellerAddress}}, {{sellerCountry}}<br />
                 {% if sellerPhone == "" or sellerPhone == nil %}
                 {% else %}
-                Tel: {{sellerPhone}}<br />
+                Tel: {{site.data.payload.sellerPhone}}<br />
                 {% endif %}
                 {% if sellerEmail == "" or sellerEmail == nil %}
                 {% else %}
-                Email: {{sellerEmail}}<br />
+                Email: {{site.data.payload.sellerEmail}}<br />
                 {% endif %}
             </div>
             <!-- Quote/Invoice to -->
             <div class="column">
-                <span class="has-text-weight-bold">{% if documentType contains 'Invoice' %} Bill to {% elsif documentType contains 'Quote' %} Quote to {% endif %}</span><br />
-                {{ContactFullName}}<br />
+                <span class="has-text-weight-bold">{% if site.data.payload.documentType contains 'Invoice' %} Bill to {% elsif site.data.payload.documentType contains 'Quote' %} Quote to {% endif %}</span><br />
+                {{site.data.payload.ContactFullName}}<br />
                 {% if _companyName == "" or _companyName == nil %}
                 {% else %}
-                {{_companyName}}<br />
+                {{site.data.payload._companyName}}<br />
                 {% endif %}
-                {{clientAddress}}, {{clientCountry}}<br />
+                {{site.data.payload.clientAddress}}, {{site.data.payload.clientCountry}}<br />
                 {% if clientPhone == "" or clientPhone == nil %}
                 {% else %}
-                Tel: {{clientPhone}}<br />
+                Tel: {{site.data.payload.clientPhone}}<br />
                 {% endif %}
-                {% if clientEmail == "" or clientEmail == nil %}
+                {% if site.data.payload.clientEmail == "" or site.data.payload.clientEmail == nil %}
                 {% else %}
-                Email: {{clientEmail}}<br />
+                Email: {{site.data.payload.clientEmail}}<br />
                 {% endif %}
             </div>
             <!-- Document Details -->
@@ -65,25 +70,25 @@
                     <tbody>
                         <tr>
                             <td class="has-text-weight-bold">Ref:</td>
-                            <td class="pl-2">{{fileName}}</td>
+                            <td class="pl-2">{{site.data.payload.fileName}}</td>
                         </tr>
                         <tr>
                             <td class="has-text-weight-bold">Date:</td>
-                            <td class="pl-2">{{ documentDate | date: "%b %d, %Y" }}</td>
+                            <td class="pl-2">{{ site.data.payload.documentDate | date: "%b %d, %Y" }}</td>
                         </tr>
                         <tr>
                             <td class="has-text-weight-bold">Currency:</td>
-                            <td class="pl-2">{{sellingCurrency}}</td>
+                            <td class="pl-2">{{site.data.payload.sellingCurrency}}</td>
                         </tr>
                         <tr>
                             <td class="has-text-weight-bold">Terms:</td>
-                            <td class="pl-2">{{paymentTerms}}</td>
+                            <td class="pl-2">{{site.data.payload.paymentTerms}}</td>
                         </tr>
                         <tr>
                             <td class="has-text-weight-bold">Delivery:</td>
-                            <td class="pl-2">{% if totalShipping == "0" or totalShipping == "null" %} Ex-Factory {% else %} {{shipmentService}} {% endif %}</td>
+                            <td class="pl-2">{% if site.data.payload.totalShipping == "0" or site.data.payload.totalShipping == "null" %} Ex-Factory {% else %} {{site.data.payload.shipmentService}} {% endif %}</td>
                         </tr>
-                        {% if totalUpholsteryMaterials != "0" %}
+                        {% if site.data.payload.totalUpholsteryMaterials != "0" %}
                         <tr>
                             <td class="has-text-weight-bold">Upholstery:</td>
                             <td class="pl-2">Listed fabrics are provided</td>
@@ -94,7 +99,7 @@
                             <td class="pl-2">Client own fabrics (COM)</td>
                         </tr>
                         {% endif %}
-                        {% if UKfoamBS5852 == "True" %}
+                        {% if site.data.payload.UKfoamBS5852 == "True" %}
                         <tr>
                             <td class="has-text-weight-bold">Foam:</td>
                             <td class="pl-2">UK Fire Codes BS5852 Crib 5 compliant</td>
@@ -117,13 +122,13 @@
             <thead>
                 <tr class="has-text-right" style="border-bottom: 1px solid #000000">
                     <th colspan="5"></th>
-                    <th title="Price" colspan="3">Price {{sellingCurrency}}</th>
+                    <th title="Price" colspan="3">Price {{site.data.payload.sellingCurrency}}</th>
                     <th title="Quantity" colspan="2">Qty</th>
-                    <th title="Total" colspan="2">Total {{sellingCurrency}}</th>
+                    <th title="Total" colspan="2">Total {{site.data.payload.sellingCurrency}}</th>
                 </tr>
             </thead>
             <!--LineItem start here-->
-            {% for lineItem in lineItems %} {% assign itemId = itemId | plus:1 %}
+            {% for lineItem in site.data.payload.lineItems %} {% assign itemId = itemId | plus:1 %}
             <tbody class="page-break-avoid">
                 <td>
                     <tr>
@@ -140,7 +145,7 @@
                                 {% if (lineItem.areaArray == nil or lineItem.areaArray == empty) and (lineItem.locationArray == nil or lineItem.locationArray == empty) %}
                                 {% elsif (lineItem.areaArray == nil or lineItem.areaArray) == empty %} {{lineItem.locationArray}}
                                 {% elsif (lineItem.locationArray == nil or lineItem.locationArray) == empty %} {{lineItem.areaArray}}
-                                {% else %} {{lineItem.locationArray}} - {{lineItem.areaArray}}
+                                {% else %} {{site.data.payload.lineItem.locationArray}} - {{site.data.payload.lineItem.areaArray}}
                                 {% endif %}
                             </h3>
                         </td>
@@ -148,23 +153,23 @@
                     <!--Items description, qty and prices-->
                     <tr>
                         <td colspan="4" class="is-size-5 is-uppercase has-text-weight-bold">
-                            {{lineItem.itemsReferenceArray}} {{lineItem.itemsShortNameArray}}
+                            {{site.data.payload.lineItem.itemsReferenceArray}} {{site.data.payload.lineItem.itemsShortNameArray}}
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.itemsSellingPricesPerUnitArray | with_delimiter }}</span>
+                            <span style="white-space:nowrap">{{site.data.payload.sellingCurrency}} {{site.data.payload.lineItem.itemsSellingPricesPerUnitArray | with_delimiter }}</span>
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{lineItem.qtyArray}} {% if lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</span>
+                            <span style="white-space:nowrap">{{site.data.payload.lineItem.qtyArray}} {% if site.data.payload.lineItem.qtyArray == "1" %} pc {% else %} pcs {% endif %}</span>
                         </td>
                         <td colspan="2" class="is-size-6 has-text-right">
-                            <span style="white-space:nowrap">{{sellingCurrency}} {{lineItem.totalItemsSellingPriceExcludingPackingArray | with_delimiter }}</span>
+                            <span style="white-space:nowrap">{{sellingCurrency}} {{site.data.payload.lineItem.totalItemsSellingPriceExcludingPackingArray | with_delimiter }}</span>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="10"><i>SIZE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> W{{lineItem.widthArray}} x D{{lineItem.depthArray}} x H{{lineItem.heightArray}} mm</td>
+                        <td colspan="10"><i>SIZE:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i> W{{site.data.payload.lineItem.widthArray}} x D{{site.data.payload.lineItem.depthArray}} x H{{site.data.payload.lineItem.heightArray}} mm</td>
                     </tr>
                     <tr>
-                        <td colspan="10"><i>DESCRIPTION:&nbsp;</i> {{lineItem.technicalDescriptionsArray}}</td>
+                        <td colspan="10"><i>DESCRIPTION:&nbsp;</i> {{site.data.payload.lineItem.technicalDescriptionsArray}}</td>
                     </tr>
                 </td>
             </tbody>

@@ -370,7 +370,7 @@ title: test form
         </table>
         <!--Line items ends here-->
         <!--Totals section-->
-        <table class="table is-fullwidth is-borderless pageBreak">
+<!--         <table class="table is-fullwidth is-borderless pageBreak">
             <colgroup>
                 <col span="6" />
                 <col span="2" />
@@ -420,9 +420,9 @@ title: test form
                 </tr>
                 <tr class="blank-row" style="border-top: 1px solid #000000">
                     <td colspan="12"></td>
-                </tr>
+                </tr> -->
                 <!--Shipping section-->
-                <tr>
+<!--                 <tr>
                     <td colspan="2"></td>
                     {% if totalShipping == "0" or totalShipping == "null" %}
                     <td colspan="6" class="has-text-weight-bold">
@@ -439,7 +439,7 @@ title: test form
                     <td colspan="2" class="is-size-7 has-text-right">{{site.data.payload.sellingCurrency}} {{site.data.payload.totalShipping | with_delimiter }}</td>
                     <td colspan="2" />
                     </td>
-                    {% endif %}
+                    {% endif %} -->
                     <!--Fabric handling section-->
                 <tr>
                     <td colspan="2"></td>
@@ -452,7 +452,7 @@ title: test form
                     </td>
                     {% endif %}
                     <!--Fabric local transportation section-->
-                <tr>
+<!--                 <tr>
                     <td colspan="2"></td>
                     {% if totalMaterialLocalShippingImperialUnitDocumentCurrency != "0" %}
                     <td colspan="6" class="has-text-weight-bold">
@@ -461,9 +461,9 @@ title: test form
                     <td colspan="2" class="is-size-7 has-text-right">{{site.data.payload.sellingCurrency}} {{site.data.payload.totalMaterialLocalShippingImperialUnitDocumentCurrency | with_delimiter }}</td>
                     <td colspan="2" />
                     </td>
-                    {% endif %}
+                    {% endif %} -->
                     <!--Totals sections-->
-                <tr class="blank-row">
+<!--                 <tr class="blank-row">
                     <td colspan="12" style="border-bottom: 1px solid #000000"></td>
                 </tr>
                 <tr class="blank-row">
@@ -491,9 +491,9 @@ title: test form
                 <tr class="blank-row">
                     <td colspan="12"></td>
                 </tr>
-            </tbody>
+            </tbody> -->
             <!-- Signature Section -->
-            <tbody style="border: 1px solid #000000">
+<!--             <tbody style="border: 1px solid #000000">
                 <tr>
                     <td colspan="12">
                         <p class="is-size-6 pt-3">Signed by {{site.data.payload.sellerContactFullName}}</p>
@@ -506,11 +506,11 @@ title: test form
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
         <!-- Terms & Condition  Section -->
         <table class="table is-fullwidth is-borderless">
             <!--Dynamic content if it's a quote or an invoice-->
-            {% if documentType contains 'Invoice' %}
+<!--             {% if documentType contains 'Invoice' %}
             <tbody>
                 <tr class="blank-row">
                     <td colspan="12"></td>
@@ -547,9 +547,9 @@ title: test form
             </tbody>
         </table>
         </div>
-        {% elsif documentType contains 'Quote' %}
+        {% elsif documentType contains 'Quote' %} -->
         <!--Insert a page break before the terms and conditions-->
-        <div class="pageBreak">
+<!--         <div class="pageBreak">
             <tbody>
                 <tr class="blank-row">
                     <td colspan="12"></td>
@@ -609,7 +609,7 @@ title: test form
                     </td>
                 </tr>
             </tbody>
-        </div>
+        </div> -->
         <!-- Terms & Condition  Section End-->
         </table>
     </section>

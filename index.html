@@ -10,7 +10,10 @@ title: test form
 	<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/css/bulma.css">
   </head>
 <body class="p-4">
-	<form name="quote" netlify>
+	<form name="quote" netlify-honeypot="bot-field" action="/thanks.html" netlify>
+		<p style="display:none;">
+			<label>Don’t fill this out: <input name="bot-field"></label>
+		</p>
     <!-- Document description Header -->
     <section class="pb-5 pl-4" id="header">
         <div class="columns is-vcentered">
@@ -619,9 +622,7 @@ title: test form
 	<br>
 	<div class="field is-grouped is-grouped-centered">
 	  <p class="control">
-		<a class="button is-primary">
-		  Submit
-		</a>
+	  <input type="submit" value="Submit" class="button is-primary">
 	  </p>
 	</div>
 	</form>
